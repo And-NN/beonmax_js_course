@@ -30,14 +30,13 @@ function sayName(surname) {
 	console.log(this);
 	console.log(this.name + " " + surname);
 }
-
-console.log(sayName.call(user, 'Do'));
+console.log(sayName.call(user, 'Do')); // первый аргумент call становится её this, а остальные передаются «как есть».
 console.log(sayName.apply(user, ['Smith', 'Snow'])); // метод позволяет передать МАССИВ параметров
+
 
 function count(number) {
 	return this * number;
 }
-
 let double = count.bind(2) // двойка заменит this в контексте вызова
 console.log(double(3)); // передаётся number
 console.log(double(10));

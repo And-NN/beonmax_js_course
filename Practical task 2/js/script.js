@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 	});
 
 	// Timer
-	let deadline = '2020-10-06';
+	let deadline = '2020-11-01';
 	// let deadline = '2020-10-10';
 
 	function getTimeReminding(endtime) {
@@ -97,5 +97,23 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 	}
 
 	setClock('timer', deadline);
+
+	// Modal
+
+	let more = document.querySelector('.more'),
+		overlay = document.querySelector('.overlay'),
+		close = document.querySelector('.popup-close');
+
+	more.addEventListener('click', function() {
+		overlay.style.display = 'block';
+		this.classList.add('more-splash');
+		document.body.style.overflow = 'hidden';
+	});
+
+	close.addEventListener('click', function() {
+		overlay.style.display = 'none';
+		close.classList.remove('more-splash');
+		document.body.style.overflow = '';
+	});
 });
 
