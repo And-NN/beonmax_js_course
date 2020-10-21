@@ -1,13 +1,11 @@
-// window.addEventListener('load'); // ждать полной загрузки страницы и только потом выполнять скрипт
-window.addEventListener('DOMContentLoaded', function () { // ждать только загрузки структуры DOM
-	
+window.addEventListener('DOMContentLoaded', function () {
+
 	'use strict';
-	
 	let tab = document.querySelectorAll('.info-header-tab'),
 		info = document.querySelector('.info-header'),
 		tabContent = document.querySelectorAll('.info-tabcontent');
-	
-		function hideTabContent(a) {
+
+	function hideTabContent(a) {
 		for (let i = a; i < tabContent.length; i++) {
 			tabContent[i].classList.remove('show');
 			tabContent[i].classList.add('hide');
@@ -23,7 +21,7 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 		}
 	}
 
-	info.addEventListener('click', function(event) {
+	info.addEventListener('click', function (event) {
 		let target = event.target;
 		if (target && target.classList.contains('info-header-tab')) {
 			for (let i = 0; i < tab.length; i++) {
@@ -34,34 +32,25 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 				}
 			}
 		}
+
 	});
 
-	// Timer
-	let deadline = '2020-11-01';
-	// let deadline = '2020-10-10';
+	// Timer 
 
-	function getTimeReminding(endtime) {
-		let tmp = Date.parse(endtime) - Date.parse(new Date());
-		if (tmp <= 0) {
-			return {
-				'total': 0,
-				'hours': 0,
-				'minutes': 0,
-				'seconds': 0
-			}
-		}
+	let deadline = '2018-11-21';
 
-		let	seconds = Math.floor((tmp / 1000) % 60),
-			minutes = Math.floor((tmp / 100 / 60) % 60),
-			hours = Math.floor((tmp / (1000 * 60 * 60)));
-			// hours = Math.floor((tmp / 1000 / 60 / 60) % 24),
-			// days = Math.floor(tmp / (1000 * 60 * 60 * 24));
+	function getTimeRemaining(endtime) {
+		let t = Date.parse(endtime) - Date.parse(new Date()),
+			seconds = Math.floor((t / 1000) % 60),
+			minutes = Math.floor((t / 1000 / 60) % 60),
+			hours = Math.floor((t / (1000 * 60 * 60)));
+
 		return {
-			'total': tmp,
+			'total': t,
 			'hours': hours,
 			'minutes': minutes,
 			'seconds': seconds
-		}
+		};
 	}
 
 	function setClock(id, endtime) {
@@ -70,30 +59,28 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 			minutes = timer.querySelector('.minutes'),
 			seconds = timer.querySelector('.seconds'),
 			timeInterval = setInterval(updateClock, 1000);
-		
-		function updateClock() {
-			let tmp = getTimeReminding(endtime);
 
-			if (tmp.hours == 0) {
-				hours.textContent = tmp.hours + '0';
-			} else {
-				hours.textContent = tmp.hours;
-			}
-			if (tmp.minutes == 0) {
-				minutes.textContent = tmp.minutes + '0';
-			} else {
-				minutes.textContent = tmp.minutes;
-			}
-			if (tmp.seconds == 0) {
-				seconds.textContent = tmp.seconds + '0';
-			} else {
-				seconds.textContent = tmp.seconds;
-			}
-			
-			if (tmp.total <= 0) {
+		function updateClock() {
+			let t = getTimeRemaining(endtime);
+
+			function addZero(num) {
+				if (num <= 9) {
+					return '0' + num;
+				} else return num;
+			};
+
+			hours.textContent = addZero(t.hours);
+			minutes.textContent = addZero(t.minutes);
+			seconds.textContent = addZero(t.seconds);
+
+			if (t.total <= 0) {
 				clearInterval(timeInterval);
+				hours.textContent = '00';
+				minutes.textContent = '00';
+				seconds.textContent = '00';
 			}
 		}
+
 	}
 
 	setClock('timer', deadline);
@@ -104,47 +91,54 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 		overlay = document.querySelector('.overlay'),
 		close = document.querySelector('.popup-close');
 
-	more.addEventListener('click', function() {
+	more.addEventListener('click', function () {
 		overlay.style.display = 'block';
 		this.classList.add('more-splash');
 		document.body.style.overflow = 'hidden';
 	});
 
-	close.addEventListener('click', function() {
+	close.addEventListener('click', function () {
 		overlay.style.display = 'none';
-		close.classList.remove('more-splash');
+		more.classList.remove('more-splash');
 		document.body.style.overflow = '';
 	});
-
 
 	// Form
 
 	let message = {
 		loading: 'Загрузка...',
-		success: 'Спасибо, скоро мы с вами свяжемся!',
+		success: 'Спасибо! Скоро мы с вами свяжемся!',
 		failure: 'Что-то пошло не так...'
-	}
+	};
 
 	let form = document.querySelector('.main-form'),
 		input = form.getElementsByTagName('input'),
 		statusMessage = document.createElement('div');
-		statusMessage.classList.add('status');
 
-	form.addEventListener('submit', function(event) { //обработчик события на форме а не на кнопке отправки!
+	statusMessage.classList.add('status');
+
+	form.addEventListener('submit', function (event) {
 		event.preventDefault();
-		form.appendChild(statusMessage); // при событии submit
-		
+		form.appendChild(statusMessage);
+
 		let request = new XMLHttpRequest();
 		request.open('POST', 'server.php');
-		request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		
-		let formData = new FormData(form);
-		request.send(formData);
+		request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
-		request.addEventListener('readystatechange', function() {
+		let formData = new FormData(form);
+
+		let obj = {};
+		formData.forEach(function (value, key) {
+			obj[key] = value;
+		});
+		let json = JSON.stringify(obj);
+
+		request.send(json);
+
+		request.addEventListener('readystatechange', function () {
 			if (request.readyState < 4) {
 				statusMessage.innerHTML = message.loading;
-			} else if (request.readyState === 4 && request.status === 200) {
+			} else if (request.readyState === 4 && request.status == 200) {
 				statusMessage.innerHTML = message.success;
 			} else {
 				statusMessage.innerHTML = message.failure;
@@ -154,7 +148,7 @@ window.addEventListener('DOMContentLoaded', function () { // ждать толь
 		for (let i = 0; i < input.length; i++) {
 			input[i].value = '';
 		}
-
 	});
-});
 
+
+});
