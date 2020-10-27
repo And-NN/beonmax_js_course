@@ -1,0 +1,1 @@
+(()=>{var o={495:o=>{o.exports=function(){this.hello=function(){return"Hello!"},this.goodbye=function(){return"Goodbye!"}}}},e={};function t(n){if(e[n])return e[n].exports;var r=e[n]={exports:{}};return o[n](r,r.exports,t),r.exports}(()=>{let o=new(t(495));console.log(o.hello()),console.log(o.goodbye())})()})();

@@ -1,0 +1,23 @@
+{
+  "name": "beonmax-js",
+  "version": "1.0.0",
+  "description": "modules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/And-NN/beonmax_js_course.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/And-NN/beonmax_js_course/issues"
+  },
+  "homepage": "https://github.com/And-NN/beonmax_js_course#readme",
+  "devDependencies": {
+    "webpack": "^5.2.1",
+    "webpack-cli": "^4.1.0"
+  }
+}
