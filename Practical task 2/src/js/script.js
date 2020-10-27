@@ -1,3 +1,7 @@
+require('es6-promise').polyfill();
+require('nodelist-foreach-polyfill');
+require('formdata-polyfill');
+
 // window.addEventListener('load'); // ждать полной загрузки страницы и только потом выполнять скрипт
 window.addEventListener('DOMContentLoaded', function () { // ждать только загрузки структуры DOM
 

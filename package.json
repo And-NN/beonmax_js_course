@@ -17,7 +17,13 @@
   },
   "homepage": "https://github.com/And-NN/beonmax_js_course#readme",
   "devDependencies": {
-    "webpack": "^5.2.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "es6-promise": "^4.2.8",
+    "formdata-polyfill": "^3.0.20",
+    "nodelist-foreach-polyfill": "^1.2.0",
+    "webpack": "^5.3.0",
     "webpack-cli": "^4.1.0"
   }
 }
